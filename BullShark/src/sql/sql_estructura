@@ -1,0 +1,231 @@
+/*
+SQLyog Community v13.3.1 (64 bit)
+MySQL - 8.0.44 : Database - bullshark
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`bullshark` /*!40100 DEFAULT CHARACTER SET utf16 COLLATE utf16_spanish_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+USE `bullshark`;
+
+/*Table structure for table `clientes` */
+
+DROP TABLE IF EXISTS `clientes`;
+
+CREATE TABLE `clientes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(200) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*Table structure for table `configuracion` */
+
+DROP TABLE IF EXISTS `configuracion`;
+
+CREATE TABLE `configuracion` (
+  `tipo` varchar(150) COLLATE utf16_spanish_ci NOT NULL,
+  `descripción_tipo` varchar(150) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `nivel` varchar(150) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,
+  `dato` int DEFAULT NULL,
+  PRIMARY KEY (`tipo`,`nivel`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*Table structure for table `cotiza_dia` */
+
+DROP TABLE IF EXISTS `cotiza_dia`;
+
+CREATE TABLE `cotiza_dia` (
+  `valor` varchar(150) COLLATE utf16_spanish_ci NOT NULL,
+  `fecha` varchar(8) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,
+  `dia` varchar(10) COLLATE utf16_spanish_ci DEFAULT NULL,
+  `apertura` double DEFAULT NULL,
+  `alza` double DEFAULT NULL,
+  `baja` double DEFAULT NULL,
+  `cerrar` double DEFAULT NULL,
+  `volumen` double DEFAULT NULL,
+  `cambio` double DEFAULT NULL,
+  PRIMARY KEY (`valor`,`fecha`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*Table structure for table `cotiza_mes` */
+
+DROP TABLE IF EXISTS `cotiza_mes`;
+
+CREATE TABLE `cotiza_mes` (
+  `valor` varchar(150) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,
+  `fecha` varchar(8) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,
+  `apertura` double DEFAULT NULL,
+  `alza` double DEFAULT NULL,
+  `baja` double DEFAULT NULL,
+  `cerrar` double DEFAULT NULL,
+  `volumen` double DEFAULT NULL,
+  `cambio` double DEFAULT NULL,
+  PRIMARY KEY (`valor`,`fecha`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*Table structure for table `cotiza_semana` */
+
+DROP TABLE IF EXISTS `cotiza_semana`;
+
+CREATE TABLE `cotiza_semana` (
+  `valor` varchar(150) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,
+  `fecha` varchar(8) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,
+  `dias` int DEFAULT NULL,
+  `apertura` double DEFAULT NULL,
+  `alza` double DEFAULT NULL,
+  `baja` double DEFAULT NULL,
+  `cerrar` double DEFAULT NULL,
+  `volumen` double DEFAULT NULL,
+  `cambio` double DEFAULT NULL,
+  PRIMARY KEY (`valor`,`fecha`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*Table structure for table `cotizaciones` */
+
+DROP TABLE IF EXISTS `cotizaciones`;
+
+CREATE TABLE `cotizaciones` (
+  `simbolo` varchar(10) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,
+  `fecha` date NOT NULL,
+  `apertura` double DEFAULT NULL,
+  `maximo` double DEFAULT NULL,
+  `minimo` double DEFAULT NULL,
+  `cierre` double DEFAULT NULL,
+  PRIMARY KEY (`simbolo`,`fecha`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*Table structure for table `indicadores` */
+
+DROP TABLE IF EXISTS `indicadores`;
+
+CREATE TABLE `indicadores` (
+  `simbolo` varchar(150) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,
+  `fecha` date NOT NULL,
+  `sma20` double DEFAULT NULL,
+  `sma50` double DEFAULT NULL,
+  `sma200` double DEFAULT NULL,
+  `rsi` double DEFAULT NULL,
+  `macd` double DEFAULT NULL,
+  `señal` double DEFAULT NULL,
+  `histograma` double DEFAULT NULL,
+  `senal` varchar(10) COLLATE utf16_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`simbolo`,`fecha`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*Table structure for table `maestro_valores` */
+
+DROP TABLE IF EXISTS `maestro_valores`;
+
+CREATE TABLE `maestro_valores` (
+  `valor` varchar(150) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,
+  `moneda` varchar(3) COLLATE utf16_spanish_ci DEFAULT NULL,
+  `ISIN` varchar(12) COLLATE utf16_spanish_ci DEFAULT NULL,
+  `mercado` varchar(100) COLLATE utf16_spanish_ci DEFAULT NULL,
+  `ticket` varchar(10) COLLATE utf16_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`valor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*Table structure for table `medias_moviles` */
+
+DROP TABLE IF EXISTS `medias_moviles`;
+
+CREATE TABLE `medias_moviles` (
+  `valor` varchar(150) COLLATE utf16_spanish_ci NOT NULL,
+  `plazo` varchar(1) COLLATE utf16_spanish_ci NOT NULL COMMENT 'D=Diario/S=Semanal/M=Mensual',
+  `nivel` int NOT NULL COMMENT 'Nivel: 1=20, 2=50, 3=100 y 4=200',
+  `fecha` varchar(8) COLLATE utf16_spanish_ci NOT NULL,
+  `cotizacion` double DEFAULT NULL,
+  `sma` double DEFAULT NULL,
+  `posicion` int DEFAULT NULL,
+  `señal` int DEFAULT NULL,
+  `acierto` int DEFAULT NULL,
+  `margen` int DEFAULT NULL,
+  PRIMARY KEY (`valor`,`plazo`,`nivel`,`fecha`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*Table structure for table `medias_moviles_exponenciales` */
+
+DROP TABLE IF EXISTS `medias_moviles_exponenciales`;
+
+CREATE TABLE `medias_moviles_exponenciales` (
+  `valor` varchar(150) COLLATE utf16_spanish_ci NOT NULL,
+  `plazo` varchar(1) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL COMMENT 'D=Diario/S=Semanal/M=Mensual',
+  `nivel` int NOT NULL COMMENT 'Nivel: 1=20, 2=50, 3=100 y 4=200',
+  `fecha` varchar(8) COLLATE utf16_spanish_ci NOT NULL,
+  `cotizacion` double DEFAULT NULL,
+  `ema` double DEFAULT NULL,
+  `posicion` int DEFAULT NULL,
+  `señal` int DEFAULT NULL,
+  `acierto` int DEFAULT NULL,
+  `margen` int DEFAULT NULL,
+  PRIMARY KEY (`valor`,`plazo`,`nivel`,`fecha`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*Table structure for table `menu` */
+
+DROP TABLE IF EXISTS `menu`;
+
+CREATE TABLE `menu` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `texto` varchar(100) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  `parent_id` int DEFAULT NULL,
+  `accion` varchar(100) CHARACTER SET utf16 COLLATE utf16_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*Table structure for table `oscilador_rsi` */
+
+DROP TABLE IF EXISTS `oscilador_rsi`;
+
+CREATE TABLE `oscilador_rsi` (
+  `valor` varchar(150) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,
+  `plazo` varchar(1) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,
+  `nivel` int NOT NULL,
+  `fecha` varchar(8) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,
+  `resultado` double DEFAULT NULL,
+  `senal` int DEFAULT NULL,
+  `acierto` int DEFAULT NULL,
+  `margen` int DEFAULT NULL,
+  `cotizacion` double DEFAULT NULL,
+  `incrementos` double DEFAULT NULL,
+  `decrementos` double DEFAULT NULL,
+  PRIMARY KEY (`valor`,`plazo`,`nivel`,`fecha`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*Table structure for table `productos` */
+
+DROP TABLE IF EXISTS `productos`;
+
+CREATE TABLE `productos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(200) COLLATE utf16_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*Table structure for table `rectas_cotizacion` */
+
+DROP TABLE IF EXISTS `rectas_cotizacion`;
+
+CREATE TABLE `rectas_cotizacion` (
+  `valor` varchar(450) COLLATE utf16_spanish_ci DEFAULT NULL,
+  `plazo` char(3) COLLATE utf16_spanish_ci DEFAULT NULL,
+  `fecha_inicio` varchar(24) COLLATE utf16_spanish_ci DEFAULT NULL,
+  `cotizacion_inicio` double DEFAULT NULL,
+  `fecha_fin` varchar(24) COLLATE utf16_spanish_ci DEFAULT NULL,
+  `cotizacion_fin` double DEFAULT NULL,
+  `fecha_ruptura` varchar(24) COLLATE utf16_spanish_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
