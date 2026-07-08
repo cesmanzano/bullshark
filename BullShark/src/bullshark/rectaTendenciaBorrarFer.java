@@ -11,6 +11,8 @@ import java.io.OutputStreamWriter;
 
 public class rectaTendenciaBorrarFer {
 	
+	/*esto es una prueba*/
+	
 	/**
 	 * Esta clase extrae datos desde un fichero txt y calcula los dos mínimos. 
 	 */
