@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.*;
 
 public class Inicio {
+	
+	
 
     static final String URL = "jdbc:mysql://localhost:3306/bullshark?rewriteBatchedStatements=true";
     static final String USER = "bolsa";
