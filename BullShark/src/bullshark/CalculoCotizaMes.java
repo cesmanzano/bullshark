@@ -16,6 +16,9 @@ public class CalculoCotizaMes {
     	
     	
     	
+    	
+    	
+    	
          String URL = "jdbc:mysql://localhost:3306/bullshark?rewriteBatchedStatements=true";
          String USER = "bolsa"; 
          String PASSWORD = "bolsa";
